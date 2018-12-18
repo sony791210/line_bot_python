@@ -1,0 +1,60 @@
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# https://www.nginx.com/resources/wiki/start/
+# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+# https://wiki.debian.org/Nginx/DirectoryStructure
+#
+# In most cases, administrators will remove this file from sites-enabled/ and
+# leave it as reference inside of sites-available where it will continue to be
+# updated by the nginx packaging team.
+#
+# This file will automatically load configuration files provided by other
+# applications, such as Drupal or Wordpress. These applications will be made
+# available underneath a path with that package name, such as /drupal8.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+
+#####  以下為說明 SSL 相關 的路徑  還沒安裝ＳＳＬ之前請註解 　##########################
+        # map /var/www/dehydrated/
+        location /.well-known/acme-challenge/ {
+                 alias /var/www/dehydrated/;
+        }
+	# SSL configuration
+	listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+        ssl_certificate /etc/dehydrated/certs/"你的IP OR DDNS NAME"/fullchain.pem;
+        ssl_certificate_key /etc/dehydrated/certs/"你的IP OR DDNS NAME"/privkey.pem;
+#########################################################################################
+
+
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+########    router　給你的ＩＰ　　########
+        server_name " 電腦內網之ＩＰ "; # ex: 192.168.50.71;
+
+
+######    說明你的 uwsgi 所起動描述的地方  
+        location / {
+                 try_files $uri @chatbot;
+        }
+
+        location @chatbot {
+                 include uwsgi_params;
+                 uwsgi_pass unix:/home/apple791210/flask/myproject.sock; #　記得修改阿
+        }
+######
+}
+
+
+
+

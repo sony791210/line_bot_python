@@ -1,0 +1,20 @@
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+#where is ur python install ?? 
+Environment="PATH=/opt/conda/bin:$PATH"
+
+#use ur python uwsgi to go on in ur project
+ExecStart=/opt/conda/bin/uwsgi --ini /home/apple791210/flask/myproject.ini
+
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

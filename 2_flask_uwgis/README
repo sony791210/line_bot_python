@@ -1,0 +1,16 @@
+
+# chatbot.uwsgi.service
+先編輯 這部分的內容
+sudo vi /etc/systemd/system/chatbot.uwsgi.service
+裡面有很多路徑得問題請自行調整
+
+# myproject.ini
+裡面有很多路徑得問題請自行調整
+其中的重點 下面的hellow 是再說 hellow.py
+app = hellow
+module = %(app)
+
+
+# run.sh
+執行就可以跑了
+
