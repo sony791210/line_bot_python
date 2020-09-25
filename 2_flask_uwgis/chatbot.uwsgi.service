@@ -4,9 +4,11 @@ After=syslog.target
 
 [Service]
 #where is ur python install ?? 
+#which python 
 Environment="PATH=/opt/conda/bin:$PATH"
 
 #use ur python uwsgi to go on in ur project
+#which uwsgi  
 ExecStart=/opt/conda/bin/uwsgi --ini /home/apple791210/flask/myproject.ini
 
 RuntimeDirectory=uwsgi

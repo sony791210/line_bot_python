@@ -18,7 +18,8 @@
     sudo apt-get install nginx  
     sudo apt-get install uwsgi  
     sudo apt-get install uwsgi-plugin-python  
-    sudo apt-get install uwsgi-plugin-http  
+    conda install -c conda-forge uwsgi
+    conda install -c conda-forge libiconv 
 
 
 
@@ -52,12 +53,23 @@ Ref: https://blog.wu-boy.com/2016/10/website-support-http2-using-letsencrypt/
 ## 基本設定  
     echo "WELLKNOWN=/var/www/dehydrated" > /etc/dehydrated/config  
     sudo mkdir /etc/dehydrated  
-    sudo touch /etc/dehydrated/config  
-## 域名設定  “blog.gslin.org” 換成你的網域名稱 如固定IP 或 DDNS
+    sudo touch /etc/dehydrated/config 
+    sudo mkdir /var/www/dehydrated
+## 安裝 dehydrated
+    cd  /etc/dehydrated/
+    wget https://raw.githubusercontent.com/lukas2511/dehydrated/master/dehydrated -O /
+    chmod 755 /etc/dehydrated/dehydrated
+## 設定nginx的conf ，在80port
+    location /.well-known/acme-challenge/ {
+        alias /var/www/dehydrated/;
+    }
+## 域名設定  “blog.gslin.org” 換成你的網域名稱 如DDNS
     cd /etc/dehydrated
     echo  'blog.gslin.org' | sudo tee -a domains.txt
 ##  第一次需要同意條款
     sudo dehydrated --register --accept-terms  
+##  驗證憑證，fbbot.wu-boy.com代表你的網域
+    /etc/dehydrated/dehydrated -c -d fbbot.wu-boy.com
 
 
 # line
